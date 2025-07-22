@@ -1,0 +1,5 @@
+crds:
+  install: true
+namespaceOverride: ${namespace}
+global:
+  domain: argocd.ricardllop.com
