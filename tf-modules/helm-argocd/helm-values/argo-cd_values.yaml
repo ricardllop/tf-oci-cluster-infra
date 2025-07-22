@@ -3,3 +3,7 @@ crds:
 namespaceOverride: ${namespace}
 global:
   domain: argocd.ricardllop.com
+server:
+  service:
+    annotations:
+      tailscale.com/expose: "true"
