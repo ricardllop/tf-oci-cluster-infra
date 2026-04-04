@@ -9,14 +9,13 @@ data "oci_identity_availability_domains" "ads" {
 
 locals {
   azs = var.create ? data.oci_identity_availability_domains.ads[0].availability_domains[*].name : []
-  kubernetes_version = "v1.33.1" # Set the Kubernetes version to the latest supported version be careful to match the node_source_details image_id Kubernetes version 
 }
 
 resource "oci_containerengine_cluster" "k8s_cluster" {
   count = var.create ? 1 : 0
 
   compartment_id     = var.compartment_id
-  kubernetes_version = local.kubernetes_version
+  kubernetes_version = var.kubernetes_version
   name               = "${var.cluster_name}-cluster"
   vcn_id             = var.vcn_id
 
@@ -43,7 +42,7 @@ resource "oci_containerengine_node_pool" "k8s_node_pool" {
 
   cluster_id         = oci_containerengine_cluster.k8s_cluster[0].id
   compartment_id     = var.compartment_id
-  kubernetes_version = local.kubernetes_version
+  kubernetes_version = var.kubernetes_version
   name               = "${var.cluster_name}-node-pool"
 
   node_config_details {
@@ -67,9 +66,7 @@ resource "oci_containerengine_node_pool" "k8s_node_pool" {
   }
 
   node_source_details {
-    # image_id to be checked, choose latest that is aarch64 from: https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-8x/index.htm
-    # Version should match the Kubernetes version defiined in local.kubernetes_version
-    image_id    = "ocid1.image.oc1.eu-madrid-1.aaaaaaaanfgbkw3arxg6l46atmkjqtc5q4hjvk6krly4kk4arxs2nfdy4wjq"
+    image_id    = var.node_image_id
     source_type = "image"
   }
 

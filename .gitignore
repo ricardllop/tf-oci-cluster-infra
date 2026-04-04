@@ -1,5 +1,5 @@
 *kubeconfig.yaml
-
+CLAUDE.md
 .terraform.lock.hcl
 *.tfstate
 *.tfstate.*

@@ -34,12 +34,33 @@ provider "helm" {
   }
 }
 
+# Creation of secret for tailscale
+resource "kubernetes_namespace_v1" "tailscale" {
+  count = var.create && var.tailscale_oauth_clientid != null && var.tailscale_oauth_secret != null ? 1 : 0
+  metadata {
+    name = "tailscale-operator"
+  }
+}
+
+resource "kubernetes_secret_v1" "tailscale_operator_oauth" {
+  count = var.create && var.tailscale_oauth_clientid != null && var.tailscale_oauth_secret != null ? 1 : 0
+  metadata {
+    name      = "operator-oauth"
+    namespace = kubernetes_namespace_v1.tailscale[0].metadata[0].name
+  }
+
+  data = {
+    client_id     = var.tailscale_oauth_clientid
+    client_secret = var.tailscale_oauth_secret
+  }
+}
+
 resource "helm_release" "argo-cd" {
   count   = var.create ? 1 : 0
   name             = "argo-cd"
   chart            = "argo-cd"
   repository       = "https://argoproj.github.io/argo-helm"
-  version          = "8.1.4"
+  version          = "9.4.17"
   # https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
   
   create_namespace  = true
@@ -57,7 +78,7 @@ resource "helm_release" "argocd-apps" {
   name             = "argocd-apps"
   chart            = "argocd-apps"
   repository       = "https://argoproj.github.io/argo-helm"
-  version          = "2.0.2"
+  version          = "2.0.4"
   #https://github.com/argoproj/argo-helm/tree/main/charts/argocd-apps
   
   create_namespace  = true

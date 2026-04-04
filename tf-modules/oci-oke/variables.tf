@@ -46,6 +46,17 @@ variable "node_pool_config" {
   }
 }
 
+variable "kubernetes_version" {
+  type        = string
+  description = "Kubernetes version for the OKE cluster and node pool. Must match the version in node_image_id."
+  default     = "v1.33.1"
+}
+
+variable "node_image_id" {
+  type        = string
+  description = "OCID of the node image. Must be aarch64/ARM and match the kubernetes_version. See https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-8x/index.htm"
+}
+
 variable "region" {
   type        = string
   description = "The region to provision the oke cluster in"
