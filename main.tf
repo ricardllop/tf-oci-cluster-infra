@@ -2,11 +2,11 @@ locals {
   oci_region           = "eu-madrid-1"  # Replace with your desired region
   oci_compartment_id   = "ocid1.tenancy.oc1..aaaaaaaayz5ixcqhspsl642j7e3ojdkfpo3mkzwkhta2iykkc35utk4bkz2a"  # Replace with your actual compartment OCID, This is specific to your OCI account
 
-  kubernetes_version = "v1.35.0"
+  kubernetes_version = "v1.37.0"
   # aarch64/ARM image matching the kubernetes_version above.
-  # Choose from: https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-8x/index.htm
-  # Current: https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-8x/oracle-linux-8.10-aarch64-2026.01.29-0-oke-1.35.0-1367.htm
-  node_image_id      = "ocid1.image.oc1.eu-madrid-1.aaaaaaaa53vs2twjxhuzk4tcegklm536fq4w2cmn7sqnvjesbaaxcrxcmuca"
+  # Choose from: https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-9x/index.htm
+  # Current: https://docs.oracle.com/en-us/iaas/images/oke-worker-node-oracle-linux-9x/oracle-linux-9.8-aarch64-2026.08.14-0-oke-1.37.0-1820.htm
+  node_image_id      = "ocid1.image.oc1.eu-madrid-1.aaaaaaaaycgxlnhvcfsaekf3l25kdlkszlj4wy7jb3sxt2ndmhfqtlj5nfna"
 }
 # Creation of vcn, subnets, and security lists for the OKE cluster
 module "vcn" {
@@ -40,8 +40,8 @@ module "oke" {
 }
 
 # Deployment of argocd + argocd-apps helm chart
-# Set create = false and apply to first provision the OKE cluster and VCN.
-# After that, set create = true to deploy the argo-cd helm chart.
+# On first apply comment this block and apply the terraform to create the OKE cluster and node pool.
+# Then uncomment this block and apply again to deploy argocd + argocd-apps helm chart.
 module "helm-argocd" {
   create                   = true
   source                   = "./tf-modules/helm-argocd"

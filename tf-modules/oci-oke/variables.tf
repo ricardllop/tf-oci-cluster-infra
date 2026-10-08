@@ -49,7 +49,7 @@ variable "node_pool_config" {
 variable "kubernetes_version" {
   type        = string
   description = "Kubernetes version for the OKE cluster and node pool. Must match the version in node_image_id."
-  default     = "v1.33.1"
+  default     = "v1.37.0"
 }
 
 variable "node_image_id" {

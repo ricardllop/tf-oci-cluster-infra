@@ -60,7 +60,7 @@ resource "helm_release" "argo-cd" {
   name             = "argo-cd"
   chart            = "argo-cd"
   repository       = "https://argoproj.github.io/argo-helm"
-  version          = "9.4.17"
+  version          = "10.10.1"
   # https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
   
   create_namespace  = true
@@ -78,7 +78,7 @@ resource "helm_release" "argocd-apps" {
   name             = "argocd-apps"
   chart            = "argocd-apps"
   repository       = "https://argoproj.github.io/argo-helm"
-  version          = "2.0.4"
+  version          = "2.0.6"
   #https://github.com/argoproj/argo-helm/tree/main/charts/argocd-apps
   
   create_namespace  = true
